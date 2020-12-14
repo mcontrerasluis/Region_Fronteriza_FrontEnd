@@ -1,0 +1,140 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-td-reg-front-heading" jhiTranslate="fronterizaApp.serviciosTdRegFront.home.createOrEditLabel">Create or edit a Td Reg Front</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.region" for="field_region">Region</label>
+                    <input type="text" class="form-control" name="region" id="field_region"
+                           formControlName="region"/>
+                    <div *ngIf="editForm.get('region')!.invalid && (editForm.get('region')!.dirty || editForm.get('region')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('region')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.domicilioRegion" for="field_domicilioRegion">Domicilio Region</label>
+                    <input type="text" class="form-control" name="domicilioRegion" id="field_domicilioRegion"
+                           formControlName="domicilioRegion"/>
+                    <div *ngIf="editForm.get('domicilioRegion')!.invalid && (editForm.get('domicilioRegion')!.dirty || editForm.get('domicilioRegion')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('domicilioRegion')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.sucursalRegion" for="field_sucursalRegion">Sucursal Region</label>
+                    <input type="text" class="form-control" name="sucursalRegion" id="field_sucursalRegion"
+                           formControlName="sucursalRegion"/>
+                    <div *ngIf="editForm.get('sucursalRegion')!.invalid && (editForm.get('sucursalRegion')!.dirty || editForm.get('sucursalRegion')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('sucursalRegion')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoImpuestod" for="field_tipoImpuestod">Tipo Impuestod</label>
+                    <input type="text" class="form-control" name="tipoImpuestod" id="field_tipoImpuestod"
+                           formControlName="tipoImpuestod"/>
+                    <div *ngIf="editForm.get('tipoImpuestod')!.invalid && (editForm.get('tipoImpuestod')!.dirty || editForm.get('tipoImpuestod')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoImpuestod')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoSolicitudd" for="field_tipoSolicitudd">Tipo Solicitudd</label>
+                    <input type="text" class="form-control" name="tipoSolicitudd" id="field_tipoSolicitudd"
+                           formControlName="tipoSolicitudd"/>
+                    <div *ngIf="editForm.get('tipoSolicitudd')!.invalid && (editForm.get('tipoSolicitudd')!.dirty || editForm.get('tipoSolicitudd')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoSolicitudd')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.ejerciciod" for="field_ejerciciod">Ejerciciod</label>
+                    <input type="number" class="form-control" name="ejerciciod" id="field_ejerciciod"
+                           formControlName="ejerciciod"/>
+                    <div *ngIf="editForm.get('ejerciciod')!.invalid && (editForm.get('ejerciciod')!.dirty || editForm.get('ejerciciod')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('ejerciciod')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('ejerciciod')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoSolicitud" for="field_tipoSolicitud">Tipo Solicitud</label>
+                    <select class="form-control" id="field_tipoSolicitud" name="tipoSolicitud" formControlName="tipoSolicitudId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tcTipoSolOption.id" *ngFor="let tcTipoSolOption of tctiposols; trackBy: trackById">{{ tcTipoSolOption.descripcion }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoImpuesto" for="field_tipoImpuesto">Tipo Impuesto</label>
+                    <select class="form-control" id="field_tipoImpuesto" name="tipoImpuesto" formControlName="tipoImpuestoId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tcTipoImpOption.id" *ngFor="let tcTipoImpOption of tctipoimps; trackBy: trackById">{{ tcTipoImpOption.descripcion }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdRegFront.ejercicio" for="field_ejercicio">Ejercicio</label>
+                    <select class="form-control" id="field_ejercicio" name="ejercicio" formControlName="ejercicioId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tcEjercOption.id" *ngFor="let tcEjercOption of tcejercs; trackBy: trackById">{{ tcEjercOption.valor }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label jhiTranslate="fronterizaApp.serviciosTdRegFront.manifestacion" for="field_manifestacions">Manifestacion</label>
+                    <select class="form-control" id="field_manifestacions" multiple name="manifestacions" formControlName="manifestacions">
+                        <option [ngValue]="getSelected(editForm.get('manifestacions')!.value, tcManifesOption)" *ngFor="let tcManifesOption of tcmanifes; trackBy: trackById">{{ tcManifesOption.id }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label jhiTranslate="fronterizaApp.serviciosTdRegFront.validacion" for="field_validacions">Validacion</label>
+                    <select class="form-control" id="field_validacions" multiple name="validacions" formControlName="validacions">
+                        <option [ngValue]="getSelected(editForm.get('validacions')!.value, tcValidaOption)" *ngFor="let tcValidaOption of tcvalidas; trackBy: trackById">{{ tcValidaOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
