@@ -15,6 +15,24 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 
+import {AppTopBarComponent} from './app.topbar.component';
+import {AppRightPanelComponent} from './app.rightpanel.component';
+import {AppMenuComponent} from './app.menu.component';
+import {AppBreadcrumbComponent} from './app.breadcrumb.component';
+import {AppFooterComponent} from './app.footer.component';
+import {AppConfigComponent} from './app.config.component';
+import {TabViewModule} from 'primeng/tabview';
+import {AppMenuitemComponent} from './app.menuitem.component';
+import {TableModule} from 'primeng/table';
+import {CheckboxModule} from 'primeng/checkbox';
+import {ToastModule} from 'primeng/toast';
+import {ToolbarModule} from 'primeng/toolbar';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+
+import {MenuService} from './app.menu.service';
+import {BreadcrumbService} from './app.breadcrumb.service';
+
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -24,8 +42,18 @@ import { ErrorComponent } from './layouts/error/error.component';
     // jhipster-needle-angular-add-module JHipster will add new module here
     FronterizaEntityModule,
     FronterizaAppRoutingModule,
+    TabViewModule,
+    TableModule,
+    CheckboxModule,
+    ToastModule,
+    ToolbarModule,
+    ConfirmDialogModule
+
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, AppTopBarComponent, AppRightPanelComponent, AppMenuComponent, AppBreadcrumbComponent, AppFooterComponent, AppConfigComponent, AppMenuitemComponent],
   bootstrap: [MainComponent],
+  providers: [
+    MenuService, BreadcrumbService
+],
 })
 export class FronterizaAppModule {}

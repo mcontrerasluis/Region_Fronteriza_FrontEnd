@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+
+
 @NgModule({
-  imports: [
+  imports: [    
     RouterModule.forChild([
       {
         path: 'td-general',

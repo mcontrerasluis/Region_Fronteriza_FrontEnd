@@ -11,9 +11,55 @@ import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { TdRegFrontService } from './td-reg-front.service';
 import { TdRegFrontDeleteDialogComponent } from './td-reg-front-delete-dialog.component';
 
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'jhi-td-reg-front',
   templateUrl: './td-reg-front.component.html',
+  styles: [`
+        :host ::ng-deep .p-dialog .product-image {
+            width: 150px;
+            margin: 0 auto 2rem auto;
+            display: block;
+        }
+        body {
+          .ui-table {
+              .ui-table-tbody {
+                  > tr {
+                      background: #f0f3f5;
+                  }
+      
+                  > tr:nth-child(even) {
+                      background-color: #ffffff;
+                  }
+              }
+          }
+      }
+      .idHeaderClass {
+        width: 25px;
+        text-align: left;
+        color: blue;
+      }
+     .idClass {
+         width:25px;
+         text-align: right;
+         color: blue;
+         overflow:hidden;
+         word-wrap: normal;
+          border: 1px solid black;
+     }
+     .prodDateHeaderClass{
+         width:100px;
+     }
+     .prodDateClass {
+       width:100px;
+       color: blue;
+       border: 1px solid black;
+     }
+     
+    `],
+    providers: [MessageService, ConfirmationService]
 })
 export class TdRegFrontComponent implements OnInit, OnDestroy {
   tdRegFronts?: ITdRegFront[];
@@ -25,12 +71,26 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  productDialog?: boolean;
+
+    products?: ITdRegFront[];
+
+    product?: ITdRegFront;
+
+    selectedProducts?: ITdRegFront[];
+
+    submitted?: boolean;
+
+    cols?: any[];
+
   constructor(
     protected tdRegFrontService: TdRegFrontService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -50,7 +110,17 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.handleNavigation();
-    this.registerChangeInTdRegFronts();
+    this.registerChangeInTdRegFronts();    
+
+    this.cols = [
+        { field: 'name', header: 'Name' },
+        { field: 'price', header: 'Price' },
+        { field: 'category', header: 'Category' },
+        { field: 'rating', header: 'Reviews' },
+        { field: 'inventoryStatus', header: 'Status' }
+    ];
+
+
   }
 
   protected handleNavigation(): void {
@@ -115,4 +185,93 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
   }
+
+
+
+  openNew() {
+    this.product = {};
+    this.submitted = false;
+    this.productDialog = true;
+}
+
+deleteSelectedProducts() {
+    this.confirmationService.confirm({
+        message: 'Are you sure you want to delete the selected products?',
+        header: 'Confirm',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            this.products = this.products.filter(val => !this.selectedProducts.includes(val));
+            this.selectedProducts = null;
+            this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
+        }
+    });
+}
+
+editProduct(product: ITdRegFront) {
+    this.product = {...product};
+    this.productDialog = true;
+}
+
+deleteProduct(product: ITdRegFront) {
+    this.confirmationService.confirm({
+        message: 'Are you sure you want to delete  ?',
+        header: 'Confirm',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            this.products = this.products.filter(val => val.id !== product.id);
+            this.product = {};
+            this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000});
+        }
+    });
+}
+
+hideDialog() {
+    this.productDialog = false;
+    this.submitted = false;
+}
+
+saveProduct() {
+    this.submitted = true;
+
+    if (this.product.region.trim()) {
+        if (this.product.id) {
+            this.products[this.findIndexById('')] = this.product;
+            this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
+        }
+        else {
+            this.product.id = 1;
+            this.product.region = 'product-placeholder.svg';
+            this.products.push(this.product);
+            this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000});
+        }
+
+        this.products = [...this.products];
+        this.productDialog = false;
+        this.product = {};
+    }
+}
+
+findIndexById(id: string): number {
+    let index = -1;
+    for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i].id === 1) {
+            index = i;
+            break;
+        }
+    }
+
+    return index;
+}
+
+createId(): string {
+    let id = '';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for ( let i = 0; i < 5; i++ ) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
+}
+
+
+
 }
